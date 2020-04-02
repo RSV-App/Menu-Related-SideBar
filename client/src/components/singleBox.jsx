@@ -3,8 +3,8 @@ import React from 'react';
 
 // console.log('hello from singlebox');
 const SingleBox = (props) => {
-  // console.log('this is PROPS FROM SINGLEBOX', props.info);
-  // console.log(props.info[1].name);
+  console.log('this is PROPS FROM SINGLEBOX', props.info);
+  console.log(props.info[1].name);
  
   let individualBox = props.info;
   

@@ -1,6 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 import SingleBox from './singleBox.jsx';
+import relatedRestaurants from '../relatedRestaurants';
+
+
 
 
 // console.log('hello from carousel');
@@ -21,25 +23,10 @@ class Carousel extends React.Component {
         'https://resizer.otstatic.com/v2/photos/medium/24489574.jpg',
         'https://resizer.otstatic.com/v2/photos/medium/23688060.jpg'
       ],
-      information: [],
+      information: relatedRestaurants,
     };
 
     this.nextSlide = this.nextSlide.bind(this);
-  }
-
-  componentDidMount() {
-    // console.log('Carousel working!!');
-    axios.get('http://localhost:3040/relatedR')
-    //on success
-      .then((data) => {
-        // console.log('THIS IS CAROUSEL:', data.data);
-        this.setState({
-          information: data.data
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   nextSlide() {
@@ -112,33 +99,33 @@ class Carousel extends React.Component {
         left: '50%',
       }
     };
-  
+
     // get current image index
     const index = this.state.currentImageIndex;
     // create a new array with 1 images from the source images
     let firstThreeRes = this.state.images.slice(index, index + 1);
     // check the length of the new array (it’s less than 1 when index is near the end of the array)
     if (firstThreeRes.length < 1) {
-    // if the firstThreeRes's length is lower than 1 images than append missing images from the beginning of the original array 
+      // if the firstThreeRes's length is lower than 1 images than append missing images from the beginning of the original array 
       firstThreeRes = firstThreeRes.concat(this.state.images.slice(0, 1 - firstThreeRes.length));
     }
 
- 
+
     return (
-      <div className='restaurantContainer' style={{width: '640px', marginLeft: 'auto', marginRight: 'auto'}}>
+      <div className='restaurantContainer' style={{ width: '640px', marginLeft: 'auto', marginRight: 'auto' }}>
         <div style={styles.base}>Related Restaurants</div>
-        <div className='nextSlide' style={{paddingTop: '36px', paddingBottom: '36px'}}> 
+        <div className='nextSlide' style={{ paddingTop: '36px', paddingBottom: '36px' }}>
           {firstThreeRes.map((image, index) =>
-            <img key={index} src={image} alt="" width= '360px' height= '360px'/>
+            <img key={index} src={image} alt="" width='360px' height='360px' />
           )}
-          <SingleBox info={this.state.information}/>
-          <button style={styles.buttonNext} onClick={this.nextSlide} onMouseEnter={this.mouseEnterButton.bind(this) } 
+          <SingleBox info={this.state.information} />
+          <button style={styles.buttonNext} onClick={this.nextSlide} onMouseEnter={this.mouseEnterButton.bind(this)}
             onMouseLeave={this.mouseExitButton.bind(this)} >
-           Next Related Restaurant
+            Next Related Restaurant
           </button>
         </div>
       </div>
-       
+
     );
   }
 }
