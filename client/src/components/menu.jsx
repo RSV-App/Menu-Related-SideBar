@@ -23,7 +23,7 @@ class Menu extends Component {
       // on success
       .then((data) => {
         // update the state with the returned data from the server
-        // console.log('DATA!!!!', data.data);
+        console.log('DATA!!!!', JSON.stringify(data.data[1]));
         this.setState({
           menu: data.data,
           restaurantLoaded: true,
