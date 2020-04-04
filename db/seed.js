@@ -15,60 +15,65 @@ const write = (writer, data) => {
   }
 };
 
-const persistIndexer = (indexer, callback) => (
-  callback(indexer)
-);
+const createMenus = async (maxRestaurants) => {
+  // create menus for each of 1-maxRestaurants
+  let menuStream = fs.createWriteStream('menus.csv', { flags: 'a' });
+  let menuItemStream = fs.createWriteStream('menuItems.csv', { flags: 'a'});
 
-const createRestaurants = async (maxrestaurants) => {
-  let restaurantStream = fs.createWriteStream('restaurants.json', { flags: 'a' });
-  let promise1 = write(restaurantStream, '[');
-  if (promise1) {
-    await promise1;
-  }
 
-  let menuIndexer = 1;
-  let menuItemIndexer = 1;
-  let firstLineInJSON = true;
+  let restaurantID = 1;
+  let menuID = 1;
+  let menuItemID = 1;
 
-  for (let i = 1; i <= maxrestaurants; i += 1) {
-    let restaurant = {};
-    restaurant.id = i;
-    restaurant.menus = [];
+  while(restaurantID <= maxRestaurants) {
+    let numMenus = howManyMenus();
 
-    let numberOfMenus = howManyMenus();
-
-    for (let j = 0; j < numberOfMenus; j += 1) {
-      let menu = {};
-      menu.id = menuIndexer;
-      menu.singleMenuItem = Faker.lorem.word();
-      menu.pricePerGuest = Faker.lorem.word();
-
-      let numberOfMenuItems = howManyMenuItems();
-      for (let k = 0; k < numberOfMenuItems; k += 1) {
-          let newMenu = {}
-          Object.assign(newMenu, menu);
-          newMenu.menuItemID = menuItemIndexer;
-          newMenu.dishName = Faker.lorem.word();
-          newMenu.dishDescription = Faker.lorem.sentences();
-          restaurant.menus.push(newMenu);
+    for (let i = 0; i < numMenus; i += 1) {
+        let menu = '';
+        // "id" ---> PK, int
+        menu += menuID + ',';
         
-        menuItemIndexer += 1;
-      }
-      menuIndexer += 1;
-    }
+        // "single_menu_item" ---> menu name, varchar(255)
+        menu += Faker.lorem.word() + ',';
 
-    let promise2 = write(restaurantStream, (firstLineInJSON ? '' : ',') + '\n' + JSON.stringify(restaurant));
-    if (promise2) {
-      await promise2;
+        // price_per_guest ---> int between 1 and 1000?
+        menu += (Math.floor(Math.random() * 1000) + 1) + ',';
+
+        // restaurant_id ---> int
+        menu += restaurantID + '\n';
+
+        // write to CSV file
+        let promise1 = write(menuStream, menu);
+        if (promise1) {
+            await promise1;
+        }
+        
+        let numMenuItems = howManyMenuItems();
+        for (let j = 0; j < numMenuItems; j += 1) {
+            let menuItem = '';
+            // "id" ---> PK, int
+            menuItem += menuItemID + ',';
+            menuItemID += 1;
+
+            // "dish_name" ---> varchar(255)
+            menuItem += Faker.lorem.word() + ',';
+
+            // dish_description ---> varchar(255)
+            menuItem += Faker.lorem.sentences() + ',';
+
+            // single_menu_id ---> int, FK to menu id
+            menuItem += menuID + '\n';
+
+            // write to CSV file
+            let promise2 = write(menuItemStream, menuItem);
+            if (promise2) {
+                await promise2;
+            }
+        }
+        menuID +=1;
     }
-    firstLineInJSON = false;
-  }
-  let promise3 = write(restaurantStream, '\n' + ']');
-  if (promise3) {
-    await promise3;
+    restaurantID += 1;
   }
 };
 
-
-
-createRestaurants(10000000).then(() => console.log("Finished Creating Menus!!"));
+createMenus(10000000).then(() => console.log("Finished Creating Menus!!"));
