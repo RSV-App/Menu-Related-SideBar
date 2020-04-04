@@ -1,6 +1,10 @@
 ## MAC files ##
 .DS_Store
 
+#
+*ants.jsonl
+*ants.json
+
 ## NPM ##
 npm
 npm-debug.log
