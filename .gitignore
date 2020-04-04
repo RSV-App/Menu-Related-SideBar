@@ -1,6 +1,10 @@
 # Seed data files
 *.csv
 
+#
+*rants.json
+*rants.jsonl
+
 ## MAC files ##
 .DS_Store
 
