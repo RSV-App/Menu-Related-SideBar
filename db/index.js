@@ -1,46 +1,22 @@
-// Make connection to db
-
-const mysql = require('mysql');
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'complete_menu'
-});
+const createClient = require('./pg_client.js');
 
 
-// Read all function used for the server GET route 
-// INNER JOIN selects all rows from both participating tables as long as there is a match between columns INNER JOIN menu_items
-const getAll = function(res) {
-  // connection.connect();
-  connection.query('SELECT * FROM menu INNER JOIN menu_items ON menu_items.single_menu_id = menu.id', (err, data) => {
+module.exports.getMenus = (restaurantID, callback) => {
+  const client = createClient();
+  client.connect(err => {
     if (err) {
-      res.status(500);
-      res.send(err);
+      console.error('connection error', err.stack);
     } else {
-      res.status(200);
-      res.send(data);
+      console.log('connected to db');
     }
   });
-  // connection.end();
-};
-
-// Read all function for related restaurants for server GET route 
-const getRelated = function(res) {
-  connection.query('SELECT * FROM related', (err, data) => {
+  const text = `SELECT * FROM menuitemsdenormalized WHERE restaurant_id=${restaurantID};`;
+  client.query(text, (err, data) => {
     if (err) {
-      res.status(500);
-      res.send(err);
+      callback(err);
     } else {
-      res.status(200);
-      res.send(data);
+      callback(err, data);
     }
+    client.end();
   });
-};
-
-// export functions to be used elsewhere
-module.exports = {
-  connection: connection,
-  getAll: getAll,
-  getRelated: getRelated
 };
