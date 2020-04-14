@@ -9,7 +9,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Menu Service'],
+  app_name: ['Menu Service Deployed'],
   /**
    * Your New Relic license key.
    */

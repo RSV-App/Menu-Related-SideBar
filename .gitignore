@@ -2,6 +2,7 @@
 *.csv
 # new relic file, with license key
 newrelic.js
+newrelic_agent.log
 
 #
 *rants.json

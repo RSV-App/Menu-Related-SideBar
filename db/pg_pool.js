@@ -8,9 +8,7 @@ const pool = new Pool({
   max: 1000,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
-  // password: dbConfig.password
-  // port: dbConfig.port
-
+  port: dbConfig.port
 });
 
 module.exports = pool;
