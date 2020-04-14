@@ -8,26 +8,28 @@ import Carousel from './carousel.jsx';
 class Menu extends Component {
   constructor(props) {
     super(props);
-
+    const { id } = this.props;
     this.state = {
       menus: [],
       restaurantLoaded: false,
       menuItems: [],
+      restaurantID: id,
     };
   }
  
   // Client get route for menu
   componentDidMount() {
     // console.log('DATA!!!!');
-    axios.get('http://localhost:3040/menu')
+    const id = this.state.restaurantID;
+    axios.get(`/api/menu/${id}`)
       // on success
       .then((data) => {
         // update the state with the returned data from the server
-        // console.log('DATA!!!!', data.data);
+        // console.log('DATA!!!!', data.data.rows);
         this.setState({
-          menu: data.data,
+          menu: data.data.rows,
           restaurantLoaded: true,
-          menuItems: data.data,
+          menuItems: data.data.rows,
         });
       })
       // Have a catch for erros

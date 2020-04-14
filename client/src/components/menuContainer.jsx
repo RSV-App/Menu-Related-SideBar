@@ -5,7 +5,7 @@ import MenuTypeContainer from './menuTypeContainer.jsx';
 class MenuContainer extends React.Component {
   constructor (props) {
     super(props);
-      
+    // console.log('MenuContainer Props: ', props);
     this.state = {
       expanded: false,
       showGradient: true,
@@ -94,13 +94,21 @@ class MenuContainer extends React.Component {
         bottom: this.state.mouseOver ? '-1px' : '0px',
       },  
     };
+    // this sorts menu items by their "type" ... stored as single_menu_item
     let itemObject = {};
     this.props.items.forEach(item => {
+      if (!itemObject[item.single_menu_item]) {
+        itemObject[item.single_menu_item] = [];
+      }
+      itemObject[item.single_menu_item].push(item);
+      /* ORIGINAL CODE.
       if (!itemObject[item.type]) {
         itemObject[item.type] = [];
       }
       itemObject[item.type].push(item);
+      */ 
     });
+    // console.log('item object', itemObject)
     let key = 0;
   
     const menuTypeContainers = Object.keys(itemObject).map(type => {
