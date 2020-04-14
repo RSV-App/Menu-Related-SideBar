@@ -1,3 +1,4 @@
+require('newrelic');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -21,16 +22,21 @@ const db = require('../db/index.js');
 // Create GET route for menu
 app.get('/api/menu/:id', function(req, res) {
   // This route should send back all the menu items
-  console.log('GET -->/api/menu/:id<-- Route Works!');
+  // console.log('GET -->/api/menu/:id<-- Route Works!');
   db.getMenus(req.params.id, (err, data) => {
     if (err) {
-      console.log('error retreiving data: ', err);
+      // console.log('error retreiving data: ', err);
       res.status(500).send();
     } else {
-      console.log('retreived menus: ', data);
+      // console.log('retreived menus: ', data);
       res.status(200).send(data);
     }
   });
+});
+
+app.get('/api/bundle', function(req, res) {
+  // res.set('Content-Encoding', 'gzip');
+  res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'bundle.js'));
 });
 
 app.listen(port, function() {

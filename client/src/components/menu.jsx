@@ -21,7 +21,7 @@ class Menu extends Component {
   componentDidMount() {
     // console.log('DATA!!!!');
     const id = this.state.restaurantID;
-    axios.get(`http://localhost:3040/api/menu/${id}`)
+    axios.get(`/api/menu/${id}`)
       // on success
       .then((data) => {
         // update the state with the returned data from the server

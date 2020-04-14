@@ -1,5 +1,7 @@
 # Seed data files
 *.csv
+# new relic file, with license key
+newrelic.js
 
 #
 *rants.json
