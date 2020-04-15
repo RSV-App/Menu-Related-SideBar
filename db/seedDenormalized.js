@@ -2,10 +2,10 @@ const Faker = require('faker');
 const fs = require('fs');
 
 //generate int between 2 and 4, used to determine menus per restaurant
-const howManyMenus = () => (Math.floor(Math.random() * 3) + 2);
+const howManyMenus = () => (Math.floor(Math.random() * 2) + 1);
 
 // generate int between 3 and 5, used to determine items per menu
-const howManyMenuItems = () => (Math.floor(Math.random() * 3) + 3);
+const howManyMenuItems = () => (Math.floor(Math.random() * 2) + 2);
 
 const write = (writer, data) => {
   if (!writer.write(data)) {
