@@ -9,7 +9,7 @@ let app = express();
 let port = 3040;
 
 // serves up static files to localhost
-app.use('/:id', express.static('client/dist'));
+app.use('/:id([0-9]+)', express.static('client/dist'));
 // app.use('/:id', express.static(path.resolve(__dirname, '..', 'public')));
 
 app.use(cors());
@@ -37,6 +37,10 @@ app.get('/api/menu/:id', function(req, res) {
 app.get('/api/bundle', function(req, res) {
   // res.set('Content-Encoding', 'gzip');
   res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'bundle.js'));
+});
+
+app.get('/loaderio-c41f8f8cf6dcf8682055a5ad8234d7f9.txt', function(req, res) {
+  res.sendFile(path.resolve(__dirname, '..', 'loaderio-c41f8f8cf6dcf8682055a5ad8234d7f9.txt'));
 });
 
 app.listen(port, function() {
